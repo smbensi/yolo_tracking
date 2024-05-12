@@ -1,3 +1,6 @@
+# https://github.com/smbensi/yolo_tracking/blob/master/boxmot/trackers/strongsort/strong_sort.py
+
+ 
 import numpy as np
 
 from boxmot.appearance.reid_auto_backend import ReidAutoBackend
