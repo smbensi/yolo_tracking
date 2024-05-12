@@ -6,6 +6,13 @@ from boxmot import DeepOCSORT
 from boxmot import StrongSORT
 from ultralytics import YOLO
 
+blue = [255,0,0]
+green = [0,255,0]
+red = [0,0,255]
+font_thickness=3
+font_scale = 1
+
+
 tracker = StrongSORT(
     model_weights=Path('osnet_x0_25_msmt17.pt'), # which ReID model to use
     device='cpu',
@@ -45,15 +52,10 @@ while True:
         xyxy = track[:4].astype('int')
         id = track[4].astype('int')
         print(f'{xyxy=}, {id=}')
-        blue = [255,0,0]
-        green = [0,255,0]
-        red = [0,0,255]
         color = red
-        font_thickness=3
         text_x = xyxy[0]
-        text_y = xyxy[1]
+        text_y = xyxy[1 ]
         text = f'The id is = {id}'
-        font_scale = 1
         cv2.rectangle(im, (xyxy[0], xyxy[1]), (xyxy[2], xyxy[3]), color, thickness=font_thickness)
         cv2.putText(im, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, font_scale, (255, 255, 255), font_thickness)
 
