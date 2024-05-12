@@ -7,6 +7,7 @@ from boxmot.appearance.reid_auto_backend import ReidAutoBackend
 from boxmot.trackers.strongsort.sort.tracker import Tracker
 from boxmot.utils.matching import NearestNeighborDistanceMetric
 from boxmot.motion.cmc import get_cmc_method
+from boxmot.utils import PerClassDecorator
 
 class StrongSORT:
     def __init__(self, model_weights, device, fp16,
@@ -28,3 +29,29 @@ class StrongSORT:
             ema_alpha=ema_alpha
         )
         self.cmc = get_cmc_method('ecc')()
+    
+    @PerClassDecorator
+    def update(self, dets, img, embs=None):
+        assert isinstance(
+            dets, np.array
+        ), f"Unsupported 'dets' input format '{type(dets)}', valid format is np.ndarray"
+
+        assert isinstance(
+            img, np.ndarray
+        ), f"Unsupported 'img' input format '{type(img)}', valid format is np.ndarray"
+        
+        assert (
+            len(dets.shape) == 2
+        ), "Unsupported 'dets' dimensions, valid number of dimension is 2"
+        
+        assert (
+            dets.shape[1] == 6
+        ), "Unsupported 'dets' 2nd dimension length, valid number is 6"
+        
+        dets = np.hstack([dets, np.arange(len(dets)).reshape(-1, 1)])
+        xyxy = dets[:, 0:4]
+        confs = dets[:,4]
+        clss = dets[:, 5]
+        det_ind = dets[:, 6]
+        
+        
