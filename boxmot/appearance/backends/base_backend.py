@@ -6,8 +6,11 @@ from abc import ABC, abstractmethod
 from boxmot.appearance.backbones import build_model, get_nr_classes
 from boxmot.appearance.reid_model_factory import (
     get_model_name,
-    get_model_url
+    get_model_url,
+    show_downloadable_models    
 )
+from boxmot.utils import logger as LOGGER
+ 
 
 class BaseModelBackend:
     def __init__(self, weights, device, half):
